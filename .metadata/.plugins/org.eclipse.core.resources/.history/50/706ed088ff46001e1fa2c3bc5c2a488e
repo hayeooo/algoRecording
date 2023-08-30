@@ -1,0 +1,23 @@
+package algo_2023_08_30;
+/*
+ * 
+ * 
+ */
+
+class Status{
+	int cnt;
+	int chance;
+	
+	Status(int cnt, int chance){
+		this.cnt=cnt;
+		this.chance=chance;
+	}
+}
+public class BOJ_1600_말이되고픈원숭이_김하연 {
+
+	public static void main(String[] args) {
+		
+
+	}
+
+}

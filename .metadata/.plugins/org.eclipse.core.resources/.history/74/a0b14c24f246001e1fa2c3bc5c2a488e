@@ -1,0 +1,13 @@
+package algo_2023_08_30;
+/*
+ * 아직 방문하지 않은 점들 중 하나를 방문했다고 가정하고
+ * 그 점을 제외한 나머지 점들을 마저 돌았을 때의 거리를 구한다.
+ */
+public class BOJ_10971_외판원순회2_김하연 {
+
+	public static void main(String[] args) {
+		
+
+	}
+
+}

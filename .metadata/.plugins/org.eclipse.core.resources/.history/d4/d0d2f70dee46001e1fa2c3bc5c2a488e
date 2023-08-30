@@ -1,0 +1,24 @@
+package algo_2023_08_30;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BOJ_11048_이동하기_김하연 {
+	
+	static BufferedReader br;
+	static StringTokenizer st;
+	
+	static int N,M;				// 미로의 크기
+	
+	static int[][] maze;
+	static int[][] cnt;
+	
+	public static void main(String[] args) {
+		
+		br=new BufferedReader(new InputStreamReader(System.in));
+		
+
+	}
+
+}

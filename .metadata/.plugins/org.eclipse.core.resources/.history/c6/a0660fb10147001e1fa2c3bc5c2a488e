@@ -1,0 +1,23 @@
+package algo_2023_08_30;
+/*
+ * BOJ 1600: 말이 되고픈 원숭이
+ * 현 위치에서 갈 수 있는 모든 방향에 대해 이동한다.
+ * 1. 인접한 네 방향 2. 말의 움직임
+ * 최소한 동작으로 시작지점에서 도착지점까지 가도록
+ * 
+ */
+
+
+public class BOJ_1600_말이되고픈원숭이_김하연 {
+
+	public static void main(String[] args) {
+		
+
+	}
+	// 현재 위치에서 갈 수 있는 모든 방향에 대해 탐색한다.
+	// 원숭이가 움직인 횟수(cnt)와 말의 움직임으로 갈 수 있는 횟수(chance)
+	public static void dfs(int x,int y,int chance,int cnt) {
+		
+	}
+
+}

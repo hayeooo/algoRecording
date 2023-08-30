@@ -1,0 +1,73 @@
+package algo_2023_08_30;
+/*
+ * BOJ 1600: 말이 되고픈 원숭이
+ * 현 위치에서 갈 수 있는 모든 방향에 대해 이동한다.
+ * 1. 인접한 네 방향 2. 말의 움직임
+ * 장애물은 피해야 하고 이미 방문한 칸은 방문 표시를 해야한다.
+ * 
+ * DFS => 시간 초과 
+ * BFS: 말의 움직임 횟수를 추가적으로 관리해야 한다.
+ * 말 움직임 횟수를 관리하지 않으면, 
+ * 현재 칸에 말로 이동해서 도착하든 원숭이로 이동하든 둘 중 하나라도 방문했을 때
+ * 방문 처리가 되기 때문에 다양한 경우의 수를 고려할 수 없다.
+ */
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+class Status{
+	int x;
+	int y;
+	int chance;
+}
+public class BOJ_1600_말이되고픈원숭이_김하연 {
+
+	static BufferedReader br;
+	static StringTokenizer st;
+	
+	static int K;				// 말 움직임 횟수
+	static int W, H;			// 격자판의 가로, 세로 길이
+	static int[][] board;		// 격자판 정보
+	
+	static int[] dx= {-1,0,1,0};	// 북, 동, 남, 서
+	static int[] dy= {0,1,0,-1};
+	static int[] horseDx= {-1,-2,-2,-1,1,2,2,1};
+	static int[] horseDy= {-2,-1,1,2,2,1,-1,-2};
+	static boolean[][][] visited;
+	static int minCnt;
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		
+		br=new BufferedReader(new InputStreamReader(System.in));
+		
+		// 말 움직임 횟수 입력 받는다.
+		K=Integer.parseInt(br.readLine().trim());
+		
+		// 격자판의 가로, 세로 길이를 입력 받는다.
+		st=new StringTokenizer(br.readLine().trim());
+		W=Integer.parseInt(st.nextToken());
+		H=Integer.parseInt(st.nextToken());
+		
+		// 격자판 정보를 입력 받는다.
+		board=new int[H][W];
+		for (int h=0;h<H;h++) {
+			st=new StringTokenizer(br.readLine().trim());
+			for (int w=0;w<W;w++) {
+				board[h][w]=Integer.parseInt(st.nextToken());
+			}
+		}
+		
+		visited=new boolean[K+1][H][W];
+		minCnt=Integer.MAX_VALUE;
+		visited[0][0][0]=true;
+
+	}
+	
+	public static void bfs(int x,int y) {
+		Deque<>
+	}
+	
+
+}

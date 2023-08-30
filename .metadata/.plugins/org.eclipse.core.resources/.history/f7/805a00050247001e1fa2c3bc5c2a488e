@@ -1,0 +1,27 @@
+package algo_2023_08_30;
+/*
+ * BOJ 1600: 말이 되고픈 원숭이
+ * 현 위치에서 갈 수 있는 모든 방향에 대해 이동한다.
+ * 1. 인접한 네 방향 2. 말의 움직임
+ * 장애물은 피해야 하고 이미 방문한 칸은 방문 표시를 해야한다.
+ */
+
+import java.io.BufferedReader;
+import java.util.StringTokenizer;
+
+public class BOJ_1600_말이되고픈원숭이_김하연 {
+
+	static BufferedReader br;
+	static StringTokenizer st;
+	
+	public static void main(String[] args) {
+		
+
+	}
+	// 현재 위치에서 갈 수 있는 모든 방향에 대해 탐색한다.
+	// 원숭이가 움직인 횟수(cnt)와 말의 움직임으로 갈 수 있는 횟수(chance)
+	public static void dfs(int x,int y,int chance,int cnt) {
+		
+	}
+
+}

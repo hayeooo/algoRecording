@@ -1,0 +1,35 @@
+package algo_2023_08_31;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+/*
+ * SWEA 1288: 새로운 불면증 치료법
+ * N의 배수에서
+ * 0~9의 숫자가 등장했는지 확인하기 위한 10자리 수의 비트를 만든다.
+ * 현재 본 숫자를 1로 셋팅한다.
+ * 0|111111111와 같다면 숫자 세기를 종료한다.
+ */
+public class SWEA_1288_새로운불면증치료법_김하연 {
+	static BufferedReader br;
+	static StringTokenizer st;
+	
+	static int T;				// 테스트케이스 개수
+	static int N;				// 양의 시작 번호 N
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		
+		br=new BufferedReader(new InputStreamReader(System.in));
+		
+		// 테스트케이스 개수를 입력받는다.
+		T=Integer.parseInt(br.readLine().trim());
+		
+		for (int test_case=1;test_case<=T;test_case++) {
+			
+			// 첫번째 양의 번호를 입력받는다.
+			N=Integer.parseInt(br.readLine().trim());
+		}
+	}
+
+}

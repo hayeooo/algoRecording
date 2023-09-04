@@ -22,8 +22,8 @@ import java.util.StringTokenizer;
  * 		 공사를 해야하는 경우 : 인접한 지점의 높이가 같은 경우, 또는 높은 경우(낮춰야 한다)
  * 3. 최장 등산로 길이를 업데이트 한다.
  * 
- * 디버깅 필요
- * 3번
+ * dfs + 값 비교
+ * 변경되는 값에 대해서 매개변수로 넘겨준다.
  */
 public class SWEA_1949_등산로조성_김하연 {
 	
@@ -76,18 +76,24 @@ public class SWEA_1949_등산로조성_김하연 {
 			
 			// 최대 높이를 가진 지형의 위치부터 등산로 길이를 구한다.
 			maxLength=0;
+			visited=new boolean[N][N];
 			for (int[] loc:maxHeightList) {
-				visited=new boolean[N][N];
-				dfs(loc[0],loc[1],1,false);
+				visited[loc[0]][loc[1]]=true;
+				dfs(loc[0],loc[1],maxHeight,1,false);
+				visited[loc[0]][loc[1]]=false;
 			}
 			sb.append("#").append(test_case).append(" ").append(maxLength).append("\n");
 		}
 		System.out.println(sb);
 
 	}
-	public static void dfs(int x,int y, int length, boolean construct) {
+	// 최고점부터 dfs 탐색하며 지형을 깎는다.
+	// 최장 등산로 길이를 매번 업데이트 한다.
+	public static void dfs(int x,int y, int height, int length, boolean construct) {
+		maxLength=Math.max(maxLength, length);
 		// 네 방향 탐색
 		for (int d=0;d<dx.length;d++) {
+			
 			int nextX=x+dx[d];
 			int nextY=y+dy[d];
 			
@@ -99,36 +105,26 @@ public class SWEA_1949_등산로조성_김하연 {
 			// 방문 여부 확인
 			if (visited[nextX][nextY]) continue;
 			
-			// 1. 다음 이동할 높이가 현재 높이보다 낮은 경우 (공사를 수행하지 않는다.)
-			if (map[nextX][nextY]<map[x][y]) {
-				visited[nextX][nextY]=true;
-				dfs(nextX,nextY,length+1,false);
-				visited[nextX][nextY]=false;
+			// 다음으로 이동할 위치가 더 높을 경우
+			if (map[nextX][nextY]>=height){
+				// 아직 공사를 진행하지 않은 상태
+				if (!construct) {	// 공사를 진행했다면 true, 진행하지 않았다면 false
+					// K 범위 내로 지형을 깎을 수 있는 경우
+					if (map[x][y]>map[nextX][nextY]-K) {
+						visited[nextX][nextY]=true;
+						dfs(nextX,nextY,height-1,length+1,true);
+						visited[nextX][nextY]=false;
+					}
+				}
 			}
-			
-			// 2. 다음 이동할 높이가 현재 높이와 같은 경우
-			else if(map[nextX][nextY]>=map[x][y]) {
-				// 이미 공사를 한 경우 
-				if (construct) continue;
-				
-				// 공사를 하지 않은 경우
-				// 일단 땅을 파본다.
-				int dig=Math.min(K, map[nextX][nextY]-map[x][y]+1);
-				if (map[nextX][nextY]-dig>=map[x][y]) continue;
-				
+			// 다음 이동할 높이가 현재 높이보다 낮은 경우 (공사를 수행하지 않는다.)
+			else if (map[nextX][nextY]<height) {
 				visited[nextX][nextY]=true;
-				map[nextX][nextY]-=dig;
-				dfs(nextX,nextY,length+1,true);
-				map[nextX][nextY]+=dig;
+				dfs(nextX,nextY,map[nextX][nextY],length+1,construct);
 				visited[nextX][nextY]=false;
 			}
 		}
-		
-		// 더 이상 이동할 위치가 없는 경우
-		// 최장 길이를 업데이트하고 return
-		maxLength=Math.max(maxLength, length);
-		return;
-		
 	}
+	
 
 }

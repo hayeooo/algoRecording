@@ -1,0 +1,15 @@
+package algo_2023_09_07;
+/*
+ * SWEA 1953: 탈주범 검거
+ * 탈주범은 탈출한 지 한 시간 뒤, 맨홀 뚜껑을 통해 지하터널의 어느 한 지점으로 들어갔으며, 지하 터널 어딘가에서 은신 중이다.
+ * 터널끼리 연결이 되어 있는 경우 이동이 가능하므로 탈주범이 있을 수 있는 위치의 개수를 계산해야 한다.
+ * 탈주범은 시간당 1의 거리를 움직일 수 있다.
+ */
+public class SWEA_1953_탈주범검거_김하연 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

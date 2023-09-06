@@ -1,0 +1,13 @@
+package algo_2023_09_01;
+/*
+ * BOJ 174143: 단어뒤집기 2
+ * 
+ * 문자열 S가 주어졌을 때, 이 문자열에서 단어만 뒤지으려고 한다.
+ */
+public class BOJ_17413_단어뒤집기2_김하연 {
+
+	public static void main(String[] args) {
+
+	}
+
+}

@@ -111,14 +111,14 @@ public class SWEA_1953_탈주범검거_김하연 {
 	}
 	
 	public static void bfs(int x,int y) {
-		int hours=1;
+		int hours=0;
 		Deque<Pos> que=new ArrayDeque<>();
 		que.offer(new Pos(x,y));
 		visited[x][y]=true;
 		answer=1;
 		
 		while (!que.isEmpty()) {
-			if (hours>=L) {
+			if (hours==L-1) {
 				break;
 			}
 //			System.out.println("-----"+hours+"-----");

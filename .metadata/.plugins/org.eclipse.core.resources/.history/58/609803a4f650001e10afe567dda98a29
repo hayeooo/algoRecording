@@ -111,14 +111,14 @@ public class SWEA_1953_탈주범검거_김하연 {
 	}
 	
 	public static void bfs(int x,int y) {
-		int hours=1;
+		int hours=0;
 		Deque<Pos> que=new ArrayDeque<>();
 		que.offer(new Pos(x,y));
 		visited[x][y]=true;
 		answer=1;
 		
 		while (!que.isEmpty()) {
-			if (hours>=L) {
+			if (hours==L-1) {
 				break;
 			}
 //			System.out.println("-----"+hours+"-----");
@@ -142,7 +142,7 @@ public class SWEA_1953_탈주범검거_김하연 {
 					int nextY=cur.y+dy[d];
 					
 					// 배열 범위를 넘어가는지 검사
-					if (nextX<0 || nextX>=N || nextY<0 || nextY>=M) {
+					if (nextX<0 || nextX>=N || nextY<0 || nextY>=N) {
 						continue;
 					}
 					// 이미 방문한 위치인지 검사

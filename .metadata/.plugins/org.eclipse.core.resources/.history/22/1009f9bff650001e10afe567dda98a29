@@ -118,7 +118,7 @@ public class SWEA_1953_탈주범검거_김하연 {
 		answer=1;
 		
 		while (!que.isEmpty()) {
-			if (hours>=L) {
+			if (hours>L) {
 				break;
 			}
 //			System.out.println("-----"+hours+"-----");

@@ -31,8 +31,9 @@ public class SWEA_2105_디저트카페_김하연 {
 	static boolean[] dessert;		// 디저트 중복 여부를 저장하는 배열
 	static int maxCnt;				// 먹을 수 있는 최대 디저트 수
 	
-	static int[] dx= {-1,1,1,-1};	// 북동, 남동, 남서, 북서
-	static int[] dy= {1,1,-1,-1};
+	// 방향의 우선순위 우하 -> 좌하 -> 좌상 -> 우상 
+	static int[] dx= {1,1,-1,-1};	
+	static int[] dy= {1,-1,-1,1};
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		br=new BufferedReader(new InputStreamReader(System.in));
@@ -52,7 +53,7 @@ public class SWEA_2105_디저트카페_김하연 {
 				}
 			}
 			visited=new boolean[N][N];
-			dessert=new boolean[N];
+			dessert=new boolean[101];
 			maxCnt=0;
 			for (int row=0;row<N;row++) {
 				for(int col=0;col<N;col++) {
@@ -60,9 +61,9 @@ public class SWEA_2105_디저트카페_김하연 {
 					visited[row][col]=true;
 					dessert[map[row][col]]=true;
 					// 방향을 정해서 시작
-					for (int d=0;d<dx.length;d++) {
-						dfs(row,col,d,1,row,col,1);
-					}
+					// 처음은 '우하'로 시작한다.
+					// 다른 방향으로 탐색할 필요가 없는 이유는 다른 곳에서 시작한 탐색한 경로에 포함되기 때문이다.
+					dfs(1,row,col,row,col,0);
 					visited[row][col]=false;
 					dessert[map[row][col]]=false;
 				}
@@ -76,42 +77,37 @@ public class SWEA_2105_디저트카페_김하연 {
 		System.out.println(sb);
 	}
 	
-	// 출발 위치, 현재 방향, 방향 전환 횟수
-	public static void dfs(int cx,int cy, int d, int convertCnt, int startX, int startY, int cnt) {
+	// 먹은 디저트 개수, 출발 위치, 현재 방향
+	public static void dfs(int cnt, int r, int c, int initR, int initC, int prevD) {
 		
-		// 출발지로 되돌아오면 return
-		if (convertCnt==4 && cx==startX && cy==startY) {
-			maxCnt=Math.max(maxCnt, cnt);
-			return;
-		}
-		// 방향 전환 횟수가 남아있다면, 방향을 전환할 수 있다.
-		int nextX;
-		int nextY;
-		if (convertCnt<4) {
-			int nextD=(d+1)%4;
-			nextX=cx+dx[nextD];
-			nextY=cy+dy[nextD];
+		// 여기 조건문을 다니까 자꾸 -1이 나옴. 여기는 미방문 구역만 처리한다. 즉, 첫 방문지는 방문이 된 상태로 들어오기 때문에 여기를 지나갈  수 없다.
+//		if (r==initR && c==initC && cnt>2) {
+//			maxCnt=Math.max(maxCnt, cnt);
+//			return;
+//			
+//		}
+		
+		// 이동 방향 (현재 방향에서 다음 방향으로만 이동, 이전 방향 선택하지 않는다.)
+		for (int dir=prevD;dir<4;dir++) {
+			int nextR=r+dx[dir];
+			int nextC=c+dy[dir];
 			
-			// 배열 범위, 이미 방문한 곳인지 확인, 디저트 중복 확인
-			if (isRange(nextX,nextY) && !visited[nextX][nextY] && !dessert[map[nextX][nextY]]) {
-				visited[nextX][nextY]=true;
-				dessert[map[nextX][nextY]]=true;
-				dfs(nextX,nextY,nextD,convertCnt+1,startX,startY,cnt+1);
-				dessert[map[nextX][nextY]]=false;
-				visited[nextX][nextY]=false;
+			// 배열 범위 내에 있을 경우
+			if (isRange(nextR,nextC)) {
+				if (nextR==initR && nextC==initC && cnt>2) {
+					maxCnt=Math.max(maxCnt, cnt);
+					return;
+				}
+				// 방문한 여력이 없고, 이미 먹은 디저트가 아니라면 다음 dfs를 수행
+				if (!visited[nextR][nextC] && !dessert[map[nextR][nextC]]) {
+					visited[nextR][nextC]=true;
+					dessert[map[nextR][nextC]]=true;
+					dfs(cnt+1,nextR,nextC,initR,initC,dir);
+					visited[nextR][nextC]=false;
+					dessert[map[nextR][nextC]]=false;
+				}
 			}
 		}
-		// 현 방향을 계속 유지한 채로 dfs를 수행한다.
-		nextX=cx+dx[d];
-		nextY=cy+dy[d];
-		if (isRange(nextX,nextY) && !visited[nextX][nextY] && !dessert[map[nextX][nextY]]) {
-			visited[nextX][nextY]=true;
-			dessert[map[nextX][nextY]]=true;
-			dfs(nextX,nextY,d,convertCnt,startX,startY,cnt+1);
-			dessert[map[nextX][nextY]]=false;
-			visited[nextX][nextY]=false;
-		}
-		
 	}
 	public static boolean isRange(int x,int y) {
 		if (x<0 || x>=N || y<0 || y>=N) {

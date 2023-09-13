@@ -1,0 +1,43 @@
+import java.io.BufferedReader;
+import java.util.StringTokenizer;
+
+/*
+ * BOJ 3190: 뱀
+ * N*N 정사각 보드 위에서 몇몇 칸에 사과가 놓여 있다.
+ * 보드의 상하좌우 끝에 벽이 있고, 게임이 시작할 때 뱀은 맨위 맨좌측에 위치하고 뱀의 길이는 1이다. 뱀은 처음에 오른쪽을 향한다.
+ * <<게임 규칙>>
+ * 뱀은 매 초마다 아래와 같이 이동을 한다.
+ *  1. 먼저 뱀은 몸길이를 늘려 머리를 다음칸에 위치시킨다.
+ *  2. 만약 벽이나 자기자신의 몸과 부딪히면 게임이 끝난다.
+ *  3. 만약 이동한 칸에 사과가 있다면, 그 칸에 있던 사과가 없어지고 꼬리는 움직이지 않는다.
+ *  4. 만약 이동한 칸에 사과가 없다면, 몸길이를 줄여서 꼬리가 위치한 칸을 비워준다. 즉, 몸길이는 변하지 않는다.
+ * 사과의 위치와 뱀의 이동경로가 주어질 때 이 게임이 몇 초에 끝나는지 계산한다.
+ */
+
+// 뱀의 방향 변환 정보를 저장하는 클래스
+class DirectionInfo{
+	int x;
+	char c;
+	
+	DirectionInfo(int x,char c){
+		this.x=x;
+		this.c=c;
+	}
+}
+public class BOJ_3190_뱀_김하연 {
+	
+	static BufferedReader br;
+	static StringTokenizer st;
+	
+	static int N;				// 보드의 크기
+	static int K;				// 사과의 개수
+	static int L;				// 방향 변환 횟수
+	
+	static boolean[][] map;			// 뱀이 존재하는 곳을 저장할 배열
+	static boolean[][] apple;		// 사과가 존재하는 곳을 저장할 배열
+	static DirectionInfo[] dir_arr;	// 뱀의 방향 변환 정보를 담은 배열
+	public static void main(String[] args) {
+
+	}
+
+}

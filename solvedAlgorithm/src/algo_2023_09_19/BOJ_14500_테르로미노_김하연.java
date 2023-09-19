@@ -31,27 +31,28 @@ public class BOJ_14500_테르로미노_김하연 {
 	static BufferedReader br;
 	static StringTokenizer st;
 	
-	static int N,M;				// 종이의 세로 크기 N, 가로 크기 M
+	static int N,M;				// 종이의 세로 크기, 가로 크기
 	static int[][] map;			// 종이에 쓰여 있는 숫자 정보를 저장하는 배열
-	static boolean[][] visited;	// 방문 여부를 확인하는 배열
+	static boolean[][] visited;	// 방문 여부를 저장하는 배열
 	
-	static int[] dx= {-1,0,1,0};	// 북, 동, 남, 서	
+	// 방향 델타 배열
+	static int[] dx= {-1,0,1,0};	// 북, 동, 남, 서
 	static int[] dy= {0,1,0,-1};
 	
-	static int maxSum;			// 최대 숫자 합을 저장할 변수
-	
+	static int maxSum;
+		
 	public static void main(String[] args) throws IOException{
-		
 		br=new BufferedReader(new InputStreamReader(System.in));
-		st=new StringTokenizer(br.readLine().trim());
 		
-		// 종이의 세로 크기와 가로 크기를 구한다.
+		// 종이의 세로, 가로 크기를 입력 받는다.
+		st=new StringTokenizer(br.readLine().trim());
 		N=Integer.parseInt(st.nextToken());
 		M=Integer.parseInt(st.nextToken());
 		
-		// 종이 정보를 입력받는다.
+		// 종이의 숫자 정보를 입력 받는다.
 		map=new int[N][M];
 		visited=new boolean[N][M];
+		maxSum=0;
 		
 		for (int row=0;row<N;row++) {
 			st=new StringTokenizer(br.readLine().trim());
@@ -59,7 +60,8 @@ public class BOJ_14500_테르로미노_김하연 {
 				map[row][col]=Integer.parseInt(st.nextToken());
 			}
 		}
-		maxSum=0;
+		
+		// 모든 위치에서 가능한 모든 테르로미노로 가능한 수들의 합을 구한다.
 		for (int row=0;row<N;row++) {
 			for (int col=0;col<M;col++) {
 				visited[row][col]=true;
@@ -68,41 +70,47 @@ public class BOJ_14500_테르로미노_김하연 {
 			}
 		}
 		System.out.println(maxSum);
-	}
-	// 현재 위치와 테르로미노를 만든 정사각형의 개수, 현재까지 숫자의 합
-	public static void dfs(int row,int col,int cnt, int total) {
 		
-		// 정사각형이 4개라면 최대값을 갱신하고 return, 종이 위에 테르로미노가 올라가야한다는 조건
+	}
+	
+	// row,col: 현재 칸의 위치, cnt: 테르로미노를 구성하고 있는 정사각형의 개수, total: 테르로미노가 놓인 숫자 합
+	public static void dfs(int row,int col,int cnt,int total) {
+		
+		// 정사각형 4개를 이어 붙인 경우
 		if (cnt==4) {
-			maxSum=Math.max(total, maxSum);
+			maxSum=Math.max(maxSum, total);
 			return;
 		}
-		
-		// 아직 정사각형이 4개가 아닌 경우
-		// 4방향 탐색
+		// 정사각형 개수가 4개 미만인 경우
+		// 추가적인 방향 탐색을 시도
 		for (int d=0;d<dx.length;d++) {
-			// 배열 범위 탐색
 			int nextRow=row+dx[d];
 			int nextCol=col+dy[d];
 			
+			// 배열 범위 내에 있는지 확인
 			if (nextRow<0 || nextRow>=N || nextCol<0 || nextCol>=M) {
 				continue;
 			}
+			
 			// 이미 방문한 곳인지 확인
 			if (visited[nextRow][nextCol]) {
-				continue;
+				 continue;
 			}
-			// 2번째 정사각형인 경우 (ㅗ) 모양을 만들기 위해 이전 위치에서 탐색
+			// 두 번째 정사각형을 구성했을 경우
+			// (ㅗ) 모양을 위해 다른 방향으로 추가적인 탐색을 시도해야 한다.
 			if (cnt==2) {
 				visited[nextRow][nextCol]=true;
 				dfs(row,col,cnt+1,total+map[nextRow][nextCol]);
 				visited[nextRow][nextCol]=false;
 			}
-			// 다음 정사각형을 정하고 DFS 돌림.
+			// (ㅗ) 모양을 제외한 다른 테르로미노를 구성할 방향을 정한다.
 			visited[nextRow][nextCol]=true;
 			dfs(nextRow,nextCol,cnt+1,total+map[nextRow][nextCol]);
 			visited[nextRow][nextCol]=false;
 		}
+		
+		
+		
 	}
 
 }

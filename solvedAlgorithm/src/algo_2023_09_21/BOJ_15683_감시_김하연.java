@@ -110,7 +110,6 @@ public class BOJ_15683_감시_김하연 {
 		// 여기서 잘못됨..
 		// cctv 방향 배열 크기 다시 계산하기
 		for (int idx=0;idx<cctv[cctvType].length;idx++) {
-			
 			int[] eachDir=cctv[cctvType][idx];
 			
 			for (int curDir:eachDir) {

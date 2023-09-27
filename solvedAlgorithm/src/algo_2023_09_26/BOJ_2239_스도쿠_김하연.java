@@ -8,128 +8,134 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
-/*
+/**
  * BOJ 2239: 스도쿠
- * 1. 0으로 되어있는 칸에는 모두 숫자를 채워야 한다.
- * 	1-1. 단, 답이 여러 개 있다면 그 중 사전식으로 출력해야 하므로 1부터 차례대로 넣어본다.
- * 2. 숫자를 하나씩 채워나가면서 가로, 세로, 사각형 검사를 시도한다.
- * 	  스도쿠를 만들 수 없는 경우를 빠르게 배제시키기 위함이다.
- * 
+ * 9*9 크기의 보드가 있을 때, 각 행과 각 열 , 3*3 크기의 보드에 1~9까지의 숫자가 중복 없이 나타나도록 보드를 채우면 된다.
+ * 하다 만 스도쿠 퍼즐이 주어졌을 때, 마저 끝내는 프로그램을 작성한다.
+ *
+ * 1. 숫자를 채워야 할 공간을 저장한다.
+ * 2. 그 공간에 1~9까지 숫자를 채워넣으면서 중복되는 숫자가 있는지 확인한다.
+ * 3. 숫자를 채워야 할 모든 공간에 숫자를 넣고 조건에 맞는 스도쿠가 완성된다면 그 결과를 출력한다.
  */
-class Loc{
-	int x;
-	int y;
-	
-	Loc(){}
-	
-	Loc(int x,int y){
-		this.x=x;
-		this.y=y;
-	}
+class Pos{
+    int x;
+    int y;
+
+    Pos(){}
+
+    Pos(int x,int y){
+        this.x=x;
+        this.y=y;
+    }
 }
 public class BOJ_2239_스도쿠_김하연 {
 	
 	static BufferedReader br;
-	static StringTokenizer st;
 	static StringBuilder sb;
 	
 	static final int SIZE=9;
-	static char[][] board=new char[SIZE][SIZE];
-	
-	static int zeroCnt;			// 숫자가 채워지지 않은 칸의 개수
-	static List<Loc> zeroList;
+	static char[][] map;
+	static List<Pos> zeroPosList;
 	static boolean done=false;
 	
-	public static void main(String[] args) throws IOException {
-		
-		// board를 입력받는다
-		br=new BufferedReader(new InputStreamReader(System.in));
-		zeroList=new ArrayList<>();
-		for (int row=0;row<SIZE;row++) {
-			board[row]=br.readLine().trim().toCharArray();
-			for (int col=0;col<SIZE;col++) {
-				if (board[row][col]=='0') {
-					zeroList.add(new Loc(row,col));
-				}
-			}
-		}
-		zeroCnt=zeroList.size();
-		dfs(0,0);
-	}
-	
-	public static void dfs(int idx,int cnt) {
-		System.out.println("==============");
-		for (int row=0;row<SIZE;row++) {
-			System.out.println(Arrays.toString(board[row]));
-		}
-		// 숫자를 모두 채웠다면 return
-		if (cnt==zeroCnt) {
-			if (!done) {
-				for (int row=0;row<SIZE;row++) {
-					System.out.println(Arrays.toString(board[row]));
-				}
-				done=true;
-			}
-			return;
-		}
-		
-		int curX=zeroList.get(idx).x;
-		int curY=zeroList.get(idx).y;
-		
-		for (int num=1;num<=9;num++) {
-			// 일단 스도쿠에 넣는다.
-			board[curX][curY]=Integer.toString(num).charAt(0);
-			
-			// 올바른 스도쿠가 되는지 확인한다.
-			if (checkSudoku(curX,curY)) {
-				dfs(idx+1,cnt+1);
-			}
-		}
-		return ;
-	}
-	
-	public static boolean checkSudoku(int x,int y) {
-		boolean[] chosen=null;
-		
-		// 가로 방향
-		chosen=new boolean[10];
-		for (int col=0;col<9;col++) {
-			int num = board[x][col]-'0';
-			// 0인 경우 무시
-			if (num==0) continue;
-			// 중복된 숫자인 경우 false
-			if (chosen[num]) return false;
-			
-			chosen[num]=true;
-		}
-		
-		// 세로 방향
-		chosen=new boolean[10];
-		for (int row=0;row<9;row++) {
-			int num=board[row][y]-'0';
-			// 0인 경우 무시
-			if (num==0) continue;
-			// 중복된 숫자인 경우 false
-			if (chosen[num]) return false;
-			chosen[num]=true;
-		}
-		
-		// 3*3 사각형 모양
-		chosen=new boolean[10];
-		int startX=x/3;
-		int startY=y/3;
-		for (int row=startX;row<startX+3;row++) {
-			for (int col=startY;col<startY+3;col++) {
-				int num=board[row][col]-'0';
-				// 0인 경우 무시
-				if (num==0) continue;
-				// 중복된 숫자인 경우 false
-				if (chosen[num])return false;
-				chosen[num]=true;
-			}
-		}
-		
-		return true;
-	}
-
+    public static void main(String[] args) throws IOException {
+    	br=new BufferedReader(new InputStreamReader(System.in));
+    	
+    	// 스도쿠의 정보를 입력받는다.
+    	// 크기는 SIZE*SIZE
+    	map=new char[SIZE][SIZE];
+    	zeroPosList=new ArrayList<Pos>();
+    	
+    	for (int row=0;row<SIZE;row++) {
+    		String line=br.readLine().trim();
+    		for (int col=0;col<SIZE;col++) {
+    			map[row][col]=line.charAt(col);
+    			if (map[row][col]=='0') {
+    				zeroPosList.add(new Pos(row,col));
+    			}
+    		}
+    	}
+    	matchNum(0);
+    }
+    
+    public static void matchNum(int cnt) {
+    	
+    	if (cnt==zeroPosList.size()) {
+    		done=true;
+    		
+    		// 스도쿠 값을 출력한다.
+    		sb=new StringBuilder();
+    		for (int row=0;row<SIZE;row++) {
+    			for (int col=0;col<SIZE;col++) {
+    				sb.append(map[row][col]);
+    			}
+    			sb.append("\n");
+    		}
+    		System.out.print(sb);
+    		
+    		return;
+    	}
+    	
+    	if (done) return;
+    	
+    	int curR=zeroPosList.get(cnt).x;
+    	int curC=zeroPosList.get(cnt).y;
+    	
+    	for (char num='1';num<='9';num++) {
+    		// 숫자를 하나씩 채워넣는다.
+    		
+    		if (isValid(curR,curC,num)) {
+    			map[curR][curC]=num;
+    			matchNum(cnt+1);
+    			
+    		}
+    	}
+    	map[curR][curC]='0';
+    	
+    }
+    public static boolean isValid(int r,int c, char value) {
+    	
+    	// 가로 ,세로
+    	for (int idx=0;idx<SIZE;idx++) {
+    		// System.out.println("map: "+map[r][idx]+", num: "+value);
+    		if (map[r][idx]==value) return false;
+    		if (map[idx][c]==value) return false;
+    	}
+    	int startR=(r/3)*3;
+    	int startC=(c/3)*3;
+    	// 3*3 정사각형
+    	for (int row=startR;row<startR+3;row++) {
+    		for (int col=startC;col<startC+3;col++) {
+    			if (map[row][col]==value) {
+    				return false;
+    			}
+    		}
+    	}
+    	
+    	return true;
+    }
+    public static boolean isValid(int r, int c) {
+  
+    	// 가로, 세로
+    	for (int idx=0;idx<SIZE;idx++) {
+    		if (idx!=c && map[r][idx]==map[r][c]) return false;
+    		if (idx!=r && map[idx][c]==map[r][c]) return false;
+    	}
+    	
+    	// 3*3 정사각형
+    	int startR=(r/3)*3;
+    	int startC=(c/3)*3;
+    	
+    	for (int row=startR;row<startR+3;row++) {
+    		for (int col=startC;col<startC+3;col++) {
+    			if (row==r && col==c) continue;
+    			if (map[row][col]==map[r][c]) {
+    				return false;
+    			}
+    		}
+    	}
+    	
+    	return true;
+    }
 }
+

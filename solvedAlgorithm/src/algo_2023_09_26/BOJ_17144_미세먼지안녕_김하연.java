@@ -17,6 +17,7 @@ import java.util.StringTokenizer;
  * 	(r,c)에 남은 미세먼지의 양은 A-(A/5)*(확산된 방향의 개수)
  */
 
+/*
 class Pos{
 	int x;
 	int y;
@@ -122,3 +123,4 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 		
 	}
 }
+*/

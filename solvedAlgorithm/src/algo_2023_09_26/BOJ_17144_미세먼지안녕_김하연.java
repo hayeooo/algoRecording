@@ -15,20 +15,10 @@ import java.util.StringTokenizer;
  * 	(r,c)에 있는 미세먼지는 인접한 네 방향으로 확산된다.
  * 	인접한 방향에 공기청정기가 있거나, 칸이 없으면 그 방향으로는 확산이 일어나지 않는다.
  * 	(r,c)에 남은 미세먼지의 양은 A-(A/5)*(확산된 방향의 개수)
+ * 	
  */
 
-/*
-class Pos{
-	int x;
-	int y;
-	
-	Pos(){}
-	
-	Pos(int x,int y){
-		this.x=x;
-		this.y=y;
-	}
-}
+
 public class BOJ_17144_미세먼지안녕_김하연 {
 	
 	static BufferedReader br;
@@ -41,6 +31,17 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 	static int[] dx= {-1,0,1,0};	// 북, 동, 남, 서
 	static int[] dy= {0,1,0,-1};
 	
+	static class Pos{
+		int x;
+		int y;
+		
+		Pos(){}
+		
+		Pos(int x,int y){
+			this.x=x;
+			this.y=y;
+		}
+	}
 	
 	public static void main(String[] args) throws IOException {
 		br=new BufferedReader(new InputStreamReader(System.in));
@@ -70,29 +71,25 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 			for (int row=0;row<R;row++) {
 				for (int col=0;col<C;col++) {
 					if (map[row][col]>0) {
-						spreadVirus(row,col);
+						spreadDust(row,col);
 					}
 				}
 			}
 			
 			// movedMap에서 cleaner 작동
-			
+			cleanDust();
 			
 			// map 갱신
 			
 			
 		}
-		for (int row=0;row<R;row++) {
-			System.out.println(Arrays.toString(map[row]));
-		}
+
 		
 		
 	}
 	// x,y 위치에서의 미세먼지를 확산시킨다.
-	public static void spreadVirus(int x, int y) {
+	public static void spreadDust(int x, int y) {
 		List<Pos> validPos=new ArrayList<>();		// 미세먼지가 이동할 수 있는 칸의 위치를 담은 arrayList
-		
-		movedMap[x][y]=map[x][y];
 		
 		// 4방향 탐색을 시도한다.
 		for (int d=0;d<4;d++) {
@@ -117,10 +114,11 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 			movedMap[pos.x][pos.y]+=spreaded;
 		}
 		// x,y에 남아있는 미세먼지 양
-		movedMap[x][y]-=(spreaded*validPos.size());
-		
-		
+		movedMap[x][y]+=map[x][y]-(spreaded*validPos.size());
+	}
+	// 공기청정기를 작동시킨다.
+	public static void cleanDust() {
 		
 	}
 }
-*/
+

@@ -17,6 +17,7 @@ import java.util.StringTokenizer;
  * 2. 그 공간에 1~9까지 숫자를 채워넣으면서 중복되는 숫자가 있는지 확인한다.
  * 3. 숫자를 채워야 할 모든 공간에 숫자를 넣고 조건에 맞는 스도쿠가 완성된다면 그 결과를 출력한다.
  */
+
 class Pos{
     int x;
     int y;

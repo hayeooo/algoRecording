@@ -31,6 +31,8 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 	static int[] dx= {-1,0,1,0};	// 북, 동, 남, 서
 	static int[] dy= {0,1,0,-1};
 	
+	static List<Pos> cleanerList;
+	
 	static class Pos{
 		int x;
 		int y;
@@ -54,10 +56,15 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 		
 		// 방의 정보를 입력받는다.
 		map=new int[R][C];
+		cleanerList=new ArrayList<>();
+		
 		for (int row=0;row<R;row++) {
 			st=new StringTokenizer(br.readLine().trim());
 			for (int col=0;col<C;col++) {
 				map[row][col]=Integer.parseInt(st.nextToken());
+				if (map[row][col]==-1) {
+					cleanerList.add(new Pos(row,col));
+				}
 			}
 		}
 		
@@ -75,12 +82,26 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 					}
 				}
 			}
-			
+			System.out.println("==========origin map===========");
+			for (int row=0;row<R;row++) {
+				System.out.println(Arrays.toString(movedMap[row]));
+			}
 			// movedMap에서 cleaner 작동
 			cleanDust();
 			
-			// map 갱신
 			
+			// map 갱신
+			for (int row=0;row<R;row++) {
+				for (int col=0;col<C;col++) {
+					map[row][col]=movedMap[row][col];
+				}
+			}
+			for (int idx=0;idx<2;idx++) {
+				int cleanerR=cleanerList.get(idx).x;
+				int cleanerC=cleanerList.get(idx).y;
+				
+				map[cleanerR][cleanerC]=-1;
+			}
 			
 		}
 
@@ -117,8 +138,41 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 		movedMap[x][y]+=map[x][y]-(spreaded*validPos.size());
 	}
 	// 공기청정기를 작동시킨다.
+	// 시계 또는 반시계방향으로 돌린 후, 공기청정기에 위치한 먼지는 0으로 없앤다.
 	public static void cleanDust() {
+		// 위쪽 공기청정기인 경우
+		// 반시계 방향으로 먼지를 순환시킨다.
+		for (int idx=0;idx<2;idx++) {
+			int cleanerR=cleanerList.get(idx).x;
+			int cleanerC=cleanerList.get(idx).y;
+			// 먼지를 순환한다
+			rotate(cleanerR,idx*2);
+			// 먼지 순환 후, 공기 청정기 위치에 있는 먼지를 없애준다.
+			movedMap[cleanerR][cleanerC]=0;
 		
+		}
+		
+	}
+	
+	public static void rotate(int row, int startDir) {
+		
+		// 위쪽 공기청정기 바람 반시계방향 순환
+		// 1. 아래쪽으로 당기기
+		
+		// 2. 왼쪽으로 당기기
+		
+		// 3. 위쪽으로 당기기
+		
+		// 4. 오른쪽으로 당기기
+		
+		// 아래쪽 공기청정기 바람을 시계방향으로 순환
+		// 1. 위쪽으로 당기기
+		
+		// 2. 오른쪽으로 당기기
+		
+		// 3. 아래쪽으로 당기기
+		
+		// 4. 왼쪽으로 당기기
 	}
 }
 

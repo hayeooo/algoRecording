@@ -193,7 +193,6 @@ public class SWEA_5656_벽돌깨기_김하연 {
 	}
 	
 	// 벽돌을 아래로 떨어뜨린다.
-	// stack을 사용해서 다시
 	public static void downBrick() {
 		// tmpMap 바꾸기
 		// 맨 아래 row에서부터 올라가면서 0을 발견한 경우 Queue에 넣고 0으로 바꾸기

@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
  * 다리의 양 끝은 섬과 인접한 바다 위에 있어야 하고, 한 다리의 방향이 중간에 바뀌면 안된다.
  * 다리의 길이는 2 이상이어야 한다.
  * 
- * <<풀이 방법>>
+ * <<풀이 방법>> : 그래프로 접근
  * 1. 섬(node)을 구분하기 위한 bfs
  * 2. 섬과 섬을 연결하는 가능한 모든 다리(link)를 구한다.(그래프의 가능한 모든 간선 찾기)
  * 3. Kruskal algorithm으로 사이클을 형성하지 않으면서 최소 다리 길이를 구한다.
@@ -174,7 +174,7 @@ public class BOJ_17472_다리만들기2_김하연 {
 			parent[root2]=parent[root1];
 		}
 	}
-	// 세울 수 있는 모든 다리를 priorityQueue에 넣는다.
+	// 세울 수 있는 모든 다리를 priorityQueue에 넣는다.(직접 구현)
 	public static void findBridge(int row, int col, int islandNum,int d, int length) {
 		
 		while (true) {

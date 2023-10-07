@@ -82,10 +82,7 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 					}
 				}
 			}
-			System.out.println("==========origin map===========");
-			for (int row=0;row<R;row++) {
-				System.out.println(Arrays.toString(movedMap[row]));
-			}
+			
 			// movedMap에서 cleaner 작동
 			cleanDust();
 			
@@ -101,6 +98,11 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 				int cleanerC=cleanerList.get(idx).y;
 				
 				map[cleanerR][cleanerC]=-1;
+			}
+			
+			System.out.println("==========after map===========");
+			for (int row=0;row<R;row++) {
+				System.out.println(Arrays.toString(movedMap[row]));
 			}
 			
 		}

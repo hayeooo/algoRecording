@@ -140,39 +140,112 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 	// 공기청정기를 작동시킨다.
 	// 시계 또는 반시계방향으로 돌린 후, 공기청정기에 위치한 먼지는 0으로 없앤다.
 	public static void cleanDust() {
-		// 위쪽 공기청정기인 경우
-		// 반시계 방향으로 먼지를 순환시킨다.
-		for (int idx=0;idx<2;idx++) {
-			int cleanerR=cleanerList.get(idx).x;
-			int cleanerC=cleanerList.get(idx).y;
-			// 먼지를 순환한다
-			rotate(cleanerR,idx*2);
-			// 먼지 순환 후, 공기 청정기 위치에 있는 먼지를 없애준다.
-			movedMap[cleanerR][cleanerC]=0;
-		
-		}
+		rotate();
 		
 	}
 	
-	public static void rotate(int row, int startDir) {
+	public static void rotate() {
 		
 		// 위쪽 공기청정기 바람 반시계방향 순환
+		int upRow=cleanerList.get(0).x;
+		int upCol=cleanerList.get(0).y;
+		int downRow=cleanerList.get(1).x;
+		int downCol=cleanerList.get(1).y;
+		
+		// 공기 청정기 위치에 있는 칸을 정화한다.
+		movedMap[upRow][upCol]=0;
+		movedMap[downRow][downCol]=0;
+		
+		// 반시계 방향으로 순환한다.
+		int tmp=movedMap[upRow][0];
+		int curR=upRow;
+		int curC=0;
 		// 1. 아래쪽으로 당기기
-		
+		while (true) {
+			// 위쪽 칸이 배열 범위를 넘어가는 경우
+			if (!isRange(curR-1, curC)) {
+				break;
+			}
+			// 아래쪽으로 당긴다.
+			movedMap[curR][curC]=movedMap[curR-1][curC];
+			curR--;
+		}
 		// 2. 왼쪽으로 당기기
-		
+		while (true) {
+			// 오른쪽 칸이 배열 범위를 넘어가는 경우
+			if (!isRange(curR,curC+1)) {
+				break;
+			}
+			// 왼쪽으로 당긴다.
+			movedMap[curR][curC]=movedMap[curR][curC+1];
+			curC++;
+		}
 		// 3. 위쪽으로 당기기
-		
+		while (true) {
+			// 아래쪽 칸이 공기청정기가 위치한 row를 넘어가는 경우
+			if (curR+1>upRow) {
+				break;
+			}
+			// 위쪽으로 당긴다.
+			movedMap[curR][curC]=movedMap[curR+1][curC];
+			curR++;
+		}
 		// 4. 오른쪽으로 당기기
+		while (true) {
+			// 왼쪽 칸이 배열의 범위를 넘어가는 경우
+			if (!isRange(curR,curC-1)) {
+				break;
+			}
+			// 오른쪽으로 당긴다.
+			movedMap[curR][curC]=movedMap[curR][curC-1];
+			curC--;
+		}
+		movedMap[upRow][1]=tmp;
 		
 		// 아래쪽 공기청정기 바람을 시계방향으로 순환
+		tmp=movedMap[downRow][0];
+		curR=downRow;
+		curC=0;
 		// 1. 위쪽으로 당기기
-		
-		// 2. 오른쪽으로 당기기
-		
+		while (true) {
+			// 아래 칸이 배열의 범위를 넘어가는 경우
+			if (!isRange(curR+1,curC)) {
+				break;
+			}
+			movedMap[curR][curC]=movedMap[curR+1][curC];
+			curR++;
+		}
+		// 2. 왼쪽으로 당기기
+		while (true) {
+			// 오른쪽 칸이 배열의 범위를 넘어가는 경우
+			if (!isRange(curR,curC+1)) {
+				break;
+			}
+			movedMap[curR][curC]=movedMap[curR][curC+1];
+			curC++;
+		}
 		// 3. 아래쪽으로 당기기
-		
-		// 4. 왼쪽으로 당기기
+		while (true) {
+			// 위쪽 칸이 공기청정기 행보다 작은 경우
+			if (curR-1<downRow) {
+				break;
+			}
+			movedMap[curR][curC]=movedMap[curR-1][curC];
+			curR--;
+		}
+		// 4. 오른쪽으로 당기기
+		while (true) {
+			// 왼쪽 칸이 배열의 범위를 넘어가는 경우
+			if (!isRange(curR,curC-1)) {
+				break;
+			}
+			movedMap[curR][curC]=movedMap[curR][curC-1];
+			curC--;
+		}
+		movedMap[downRow][1]=tmp;
+	}
+	public static boolean isRange(int r, int c) {
+		return r>=0 && r<R && c>=0 && c<C;
 	}
 }
 

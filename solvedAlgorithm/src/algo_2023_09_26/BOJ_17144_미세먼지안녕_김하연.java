@@ -32,7 +32,7 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 	static int[] dy= {0,1,0,-1};
 	
 	static List<Pos> cleanerList;
-	
+	static int totalDust=0;
 	static class Pos{
 		int x;
 		int y;
@@ -99,13 +99,18 @@ public class BOJ_17144_미세먼지안녕_김하연 {
 				
 				map[cleanerR][cleanerC]=-1;
 			}
-			
-			System.out.println("==========after map===========");
-			for (int row=0;row<R;row++) {
-				System.out.println(Arrays.toString(movedMap[row]));
-			}
-			
 		}
+		
+		for (int row=0;row<R;row++) {
+			for (int col=0;col<C;col++) {
+				if (map[row][col]==-1) {
+					continue;
+				}
+				totalDust+=map[row][col];
+			}
+		}
+		
+		System.out.println(totalDust);
 
 		
 		

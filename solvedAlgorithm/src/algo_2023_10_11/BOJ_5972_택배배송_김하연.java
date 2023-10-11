@@ -26,30 +26,32 @@ import java.util.StringTokenizer;
  * 헛간 1에서 출발하여 도달할 수 있는 헛간까지의 여물 비용을 계산하고
  * priorityQueue에 삽입하여 최소 여물 비용을 우선적으로 뽑는다.
  * 헛간 N이 나올 시, 경로 탐색을 중단한다.(최소 여물임을 보장하기 때문)
- * : dijkstra 다시 풀어보기
+ * : dijkstra 다시 풀어보기, "어디서 방문 표시"를 해야하는지(중요)
  */
 
 public class BOJ_5972_택배배송_김하연 {
-
+	
 	static BufferedReader br;
 	static StringTokenizer st;
 	
-	static int N, M;		// 농부 찬홍이의 위치(N), 소들의 길(M)
-	static ArrayList<Road>[] graph;	// 각 헛간에서 갈 수 있는 헛간과 소 마리 수를 저장한다.
-	static boolean[] visited;				// 출발지점부터 각 노드까지 최소 비용을 저장한다.
-	static int[] dist;
+	static int N;		// 헛간의 개수
+	static int M;		// 소들의 길 개수
 	
-	public static class Road implements Comparable<Road>{
+	static List<Node>[] graph;
+	static int[] dist;
+	static boolean[] visited;
+	
+	static class Node implements Comparable<Node>{
 		int num;
 		int weight;
 		
-		Road(int num,int weight){
+		Node(int num,int weight){
 			this.num=num;
 			this.weight=weight;
 		}
 
 		@Override
-		public int compareTo(Road o) {
+		public int compareTo(Node o) {
 			return this.weight-o.weight;
 		}
 	}
@@ -58,62 +60,61 @@ public class BOJ_5972_택배배송_김하연 {
 		
 		br=new BufferedReader(new InputStreamReader(System.in));
 		
-		// N, M 입력받는다.
+		// 헛간의 개수(N)와 소들의 길(M)을 입력받는다.
 		st=new StringTokenizer(br.readLine().trim());
 		N=Integer.parseInt(st.nextToken());
 		M=Integer.parseInt(st.nextToken());
 		
-		// graph 초기화
+		// 그래프 정보를 담을 리스트를 초기화한다.
 		graph=new ArrayList[N+1];
-		visited=new boolean[N+1];
 		dist=new int[N+1];
-		
-		for (int idx=0;idx<=N;idx++) {
-			graph[idx]=new ArrayList<Road>();
-			dist[idx]=Integer.MAX_VALUE;
+		for (int num=1;num<=N;num++) {
+			graph[num]=new ArrayList<Node>();
+			dist[num]=Integer.MAX_VALUE;
 		}
 		
-		// Ai,Bi,Ci 입력받는다.
+		visited=new boolean[N+1];
+		
+		// M개의 소들의 길을 입력받는다.
 		for (int idx=0;idx<M;idx++) {
 			st=new StringTokenizer(br.readLine().trim());
-			int Ai=Integer.parseInt(st.nextToken());
-			int Bi=Integer.parseInt(st.nextToken());
-			int Ci=Integer.parseInt(st.nextToken());
+			int node1=Integer.parseInt(st.nextToken());
+			int node2=Integer.parseInt(st.nextToken());
+			int weight=Integer.parseInt(st.nextToken());
 			
-			// 양방향이므로 두 군데 모두 저장한다.
-			graph[Ai].add(new Road(Bi,Ci));
-			graph[Bi].add(new Road(Ai,Ci));
+			// 양방향이므로 두 노드에 저장한다.
+			graph[node1].add(new Node(node2,weight));
+			graph[node2].add(new Node(node1,weight));
 		}
 		
-		// 1번 헛간부터 인접한 헛간과 누적 여물비용을 priorityQueue에 넣는다.
-		PriorityQueue<Road> que=new PriorityQueue<>();
-		que.add(new Road(1,0));
+		// 현서는 헛간 1에서 출발한다.
 		dist[1]=0;
+		PriorityQueue<Node> pq=new PriorityQueue<>();
+		pq.add(new Node(1,0));
 		
-		while(!que.isEmpty()) {
-			Road now=que.poll();
+		while(!pq.isEmpty()) {
+			Node now=pq.poll();
 			
-			// 이미 최소 비용을 처리한 노드라면
-			// 확인해봤자 최소비용 아님
-			// 이미 다 확인해봄.
+			// 이미 방문한 노드인 경우
+			// 더이상 볼 필요가 없다.(이미 최소 비용을 구한 후)
 			if (visited[now.num]) continue;
 			
+			// 이제 최소 비용을 처리하므로 방문 처리
 			visited[now.num]=true;
 			
-			// 인접한 노드들 중 비용이 최소인 것만 queue에 넣는다.
-			for (Road next:graph[now.num]) {
-				if(visited[next.num]) continue;
+			// 인접한 노드를 방문해 최소 비용을 갱신한다.
+			for (Node adjNode:graph[now.num]) {
 				
-				if (dist[next.num]>=dist[now.num]+next.weight) {
-					dist[next.num]=dist[now.num]+next.weight;
-					que.add(new Road(next.num,dist[next.num]));
+				if (visited[adjNode.num]) continue;
+				
+				// 최소비용인 경우
+				if (dist[adjNode.num]>adjNode.weight+dist[now.num]) {
+					dist[adjNode.num]=adjNode.weight+dist[now.num];
+					pq.add(new Node(adjNode.num,dist[adjNode.num]));
 				}
-				
 			}
 		}
-		// N 위치의 최소 비용을 출력한다.
 		System.out.println(dist[N]);
-		
 	}
 
 }

@@ -1,4 +1,4 @@
-package algo_2023_10_11;
+package algo_2023_10;
 
 /*
  * 소수를 판별하는 알고리즘

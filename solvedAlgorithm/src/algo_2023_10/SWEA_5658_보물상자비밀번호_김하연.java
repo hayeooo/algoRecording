@@ -1,4 +1,4 @@
-package algo_2023_10_05;
+package algo_2023_10;
 
 import java.io.BufferedReader;
 import java.io.IOException;

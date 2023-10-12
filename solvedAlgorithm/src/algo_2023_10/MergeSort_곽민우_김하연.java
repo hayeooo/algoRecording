@@ -1,4 +1,4 @@
-package algo_2023_10_06;
+package algo_2023_10;
 
 import java.util.Arrays;
 

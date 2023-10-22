@@ -41,31 +41,30 @@ public class BOJ_12912_A와B2_김하연 {
 		T=br.readLine().trim();
 		
 		possible=false;
-		
 		dfs(T);
 		System.out.println(possible?1:0);
 	}
 	
 	public static void dfs(String str) {
 		
-		// System.out.println(str);
-		// T 문자열과 길이가 같은 경우
+		// 길이가 같다면 S와 같은 문자열인지 확인
 		if (str.length()==S.length()) {
 			if (str.equals(S)) possible=true;
 			return;
 		}
 		
-		// 문자열 하나를 제거한다.
-		char c=str.charAt(0);
-		String next=str.substring(1,str.length());
-		
-		if (c=='A') {
-			dfs(next);
+		// 첫 번째 문자가 B인 경우
+		if (str.charAt(0)=='B') {
+			sb=new StringBuilder(str.substring(1)).reverse();
+			dfs(sb.toString());
 		}
-		else if (c=='B') {
-			sb=new StringBuilder(next);
-			dfs(sb.reverse().toString());
+		
+		// 마지막 문자가 A인 경우
+		if (str.charAt(str.length()-1)=='A') {
+			dfs(str.substring(0,str.length()-1));
 		}
 	}
+	
+	
 
 }

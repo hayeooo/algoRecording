@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
  * 최악의 경우 L이 1이고 N,M이 500,000, K가 100 이라면
  * 500,000 * 500,000 * 100 : 시간초과
  * 트램펄린의 위치 개수를 제한해야 한다.
- * 한 별똥별의 x 위치와 다른 별똥별의 y 위치를 기준으로 한 트램펄린은 2개의 별똥별을 포함하는 트램펄린이 될 수 있다.
+ * "한 별똥별의 x 위치와 다른 별똥별의 y 위치를 기준 "으로 한 트램펄린은 2개의 별똥별을 포함하는 트램펄린이 될 수 있다.
  * 이 안에서 별똥별이 몇 개 포함되는지 확인한다.
  * 100 * 100 * 100 : 통과
  *
@@ -31,12 +31,14 @@ public class BOJ_14658_하늘에서별똥별이빗발친다_김하연 {
 
     static BufferedReader br;
     static StringTokenizer st;
-
-    static int N;           // 별똥별이 떨어지는 구역의 가로 길이
-    static int M;           // 별똥별이 떨어지는 구역의 세로 길이
+    
+    static int N;          // 별똥별이 떨어지는 구역의 가로 길이
+    static int M;          // 별똥별이 떨어지는 세로 길이
     static int L;           // 트램펄린의 한 변의 길이
     static int K;           // 별똥별의 수
+    static List<Star> stars;
 
+    static int maxCount=0;
     static class Star{
         int x;
         int y;
@@ -45,51 +47,50 @@ public class BOJ_14658_하늘에서별똥별이빗발친다_김하연 {
             this.y=y;
         }
     }
+    public static void main(String[] args) throws IOException{
 
-    static List<Star> stars;
-    static int maxCount=0;
-    public static void main(String[] args) throws IOException {
         br=new BufferedReader(new InputStreamReader(System.in));
-        // N, M ,L, K를 입력받는다.
-        st=new StringTokenizer(br.readLine().trim());
 
+        st=new StringTokenizer(br.readLine().trim());
+        // N, M, L, K를 입력 받는다.
         N=Integer.parseInt(st.nextToken());
         M=Integer.parseInt(st.nextToken());
         L=Integer.parseInt(st.nextToken());
         K=Integer.parseInt(st.nextToken());
 
         stars=new ArrayList<>();
-
-        // 별똥별이 떨어지는 위치를 입력받는다.
+        // K 개의 별똥별 위치를 입력받는다.
         for (int idx=0;idx<K;idx++){
             st=new StringTokenizer(br.readLine().trim());
             int x=Integer.parseInt(st.nextToken());
             int y=Integer.parseInt(st.nextToken());
 
-            // 위치를 저장한다.
             stars.add(new Star(x,y));
         }
 
-        // 별똥별의 위치를 기준으로 트램펄린을 놓을 위치를 선정한다.
-        for (Star starX:stars){
-            for (Star starY:stars){
-                int startX=starX.x;
-                int startY=starY.y;
-                // 해당 위치에 트램펄린을 놓았을 때 포함되는 별똥별의 개수를 구한다.
-                maxCount=Math.max(maxCount,countStars(startX,startY));
-            }
-        }
-        // 지구에 부딪히는 별똥별의 개수를 출력한다.
-        System.out.println(K-maxCount);
-    }
-    public static int countStars(int startX,int startY){
-        int count=0;
-        for (Star star : stars){
-            if (startX<=star.x && star.x<=startX+L && startY<=star.y && star.y<=startY+L){
-                count++;
+        for (Star star1:stars){
+            for (Star star2:stars){
+                maxCount=Math.max(maxCount,countStars(star1.x,star2.y));
             }
         }
 
+        System.out.println(K-maxCount);
+    }
+
+    /**
+     * 
+     * @param x 트램펄린 모서리 x 좌표
+     * @param y 트램펄린 모서리 y 좌표
+     * @return 트램펄린 안에 속한 별의 개수
+     */
+    public static int countStars(int x,int y){
+        int count=0;
+
+        for (Star star:stars){
+            if (star.x<=x && x<=star.x+L && star.y<=y && y<=star.y+L){
+                count++;
+            }
+        }
         return count;
     }
 }

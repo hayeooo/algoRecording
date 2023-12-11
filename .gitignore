@@ -5,7 +5,8 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-
+.classpath
+*.iml
 .idea
 .target
 .launch

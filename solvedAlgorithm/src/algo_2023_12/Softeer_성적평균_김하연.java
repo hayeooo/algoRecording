@@ -15,8 +15,7 @@ import java.util.StringTokenizer;
  * 1<=N(학생수)<10^6
  * 1<=K(구간수)<10^4
  * 1<=S(학생의 성적)<=100
- * 매번 학생의 구간에 대한 덧셈과 평균을 계산한다면 시간 초과가 나온다.
- * 시간을 줄이기 위해 two pointer를 사용한다.
+ * 반복문 풀이가 가능하다.
  */
 public class Softeer_성적평균_김하연 {
     static BufferedReader br;

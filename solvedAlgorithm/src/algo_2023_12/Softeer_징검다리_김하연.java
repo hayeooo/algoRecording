@@ -19,18 +19,17 @@ import java.util.StringTokenizer;
  * LIS 길이를 구하면 된다.
  */
 public class Softeer_징검다리_김하연 {
-
     static BufferedReader br;
     static StringTokenizer st;
-
-    static int N;
-    static int[] arr;
-    static int[] dp;
-
+    
+    static int N;       // 돌의 개수를 입력받는다.
+    static int[] arr;   // 돌의 높이를 저장하는 배열
+    static int[] dp;    // 최장길이수열을 저장하는 배열
     public static void main(String[] args) throws IOException{
+        
         br=new BufferedReader(new InputStreamReader(System.in));
 
-        // N 값을 입력받는다.
+        // 돌의 개수를 입력받는다.
         N=Integer.parseInt(br.readLine().trim());
 
         arr=new int[N];
@@ -41,9 +40,14 @@ public class Softeer_징검다리_김하연 {
         for (int idx=0;idx<N;idx++){
             arr[idx]=Integer.parseInt(st.nextToken());
         }
+
+        // 최장길이수열에서 각 높이가 들어갈 수 있는 위치에 값을 넣는다.
+        // 배열 내 값 자체가 최장길이수열을 나타내는 것이 아니다.
+        // 최장길이수열을 보장하기 위한 값이 들어가있고 실제로는 길이를 구하는 것이다.
         int LIS=0;
         for (int idx=0;idx<N;idx++){
             int res=binarySearch(arr[idx],0,LIS,LIS+1);
+            // 최장길이수열의 마지막 칸에 새로 들어와야 한다면
             if (res==-1){
                 dp[LIS++]=arr[idx];
             }
@@ -52,8 +56,20 @@ public class Softeer_징검다리_김하연 {
             }
         }
         System.out.println(LIS);
+        
     }
-    public static int binarySearch(int value, int start, int end, int size){
+    
+    // 최장길이수열 배열에 들어갈 위치를 return한다.
+
+    /**
+     * 
+     * @param value : 최장길이수열에 넣을 값
+     * @param start : 최장길이수열 탐색 시작지점
+     * @param end : 최장길이수열 탐색 마지막 지점
+     * @param size : 허용 가능한 최장길이수열의 크기
+     * @return : 값이 들어갈 수 있는 위치
+     */
+    public static int binarySearch(int value, int start,int end, int size){
         int res=0;
         while (start<=end){
             int mid=(start+end)/2;
@@ -65,10 +81,10 @@ public class Softeer_징검다리_김하연 {
                 start=mid+1;
             }
         }
+        // 최장길이수열의 마지막에 들어가야하는 경우
         if (start==size){
-            return -1;
+            res=-1;
         }
-
         return res;
     }
 }

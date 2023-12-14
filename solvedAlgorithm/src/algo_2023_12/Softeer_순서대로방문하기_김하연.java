@@ -26,38 +26,34 @@ public class Softeer_순서대로방문하기_김하연 {
 
     static BufferedReader br;
     static StringTokenizer st;
-    
-    static int n;           // 격자의 크기
-    static int m;           // 방문해야 하는 칸의 수
+    static int n;           // 격자 크기
+    static int m;           // 순서대로 방문해야 할 칸의 개수
+    static List<Point> pointList;
     static int[][] map;     // 격자 정보를 저장하는 배열
-    static List<Pos> posList;   // 방문해야 하는 위치를 저장하는 리스트
     static int[] dx={-1,0,1,0};     // 북, 동, 남, 서
     static int[] dy={0,1,0,-1};
-    static boolean[][] visited;
+    static boolean[][] visited; // 방문 여부 확인하기 위한 배열
     static int count;
-    
-    static class Pos {
+    static class Point{
         int x;
         int y;
-        
-        Pos(int x,int y){
+        Point(int x,int y){
             this.x=x;
             this.y=y;
         }
 
-        public boolean equals(Pos p){
+        public boolean equals(Point p){
             return x==p.x&&y==p.y;
         }
     }
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
         br=new BufferedReader(new InputStreamReader(System.in));
 
-        // 격자의 크기와 순서대로 방문해야 하는 칸의 수를 입력받는다.
+        // 격자 크기와 순서대로 방문해야 할 칸의 개수를 구한다.
         st=new StringTokenizer(br.readLine().trim());
         n=Integer.parseInt(st.nextToken());
         m=Integer.parseInt(st.nextToken());
-        
+
         // 격자 정보를 입력받는다.
         map=new int[n][n];
         for (int row=0;row<n;row++){
@@ -66,55 +62,57 @@ public class Softeer_순서대로방문하기_김하연 {
                 map[row][col]=Integer.parseInt(st.nextToken());
             }
         }
-
-        // 방문해야 하는 위치를 입력받는다.
-        posList=new ArrayList<>();
+        // 순서대로 방문해야 할 위치를 입력받는다.
+        pointList=new ArrayList<>();
         for (int idx=0;idx<m;idx++){
             st=new StringTokenizer(br.readLine().trim());
             int x=Integer.parseInt(st.nextToken())-1;
             int y=Integer.parseInt(st.nextToken())-1;
-            posList.add(new Pos(x,y));
+            pointList.add(new Point(x,y));
         }
-
-        // 출발 지점
-        Pos startPos=posList.get(0);
-        // 도착 지점
-        Pos destPos=posList.get(m-1);
+        // 출발지점
+        Point startPoint=pointList.get(0);
         visited=new boolean[n][n];
-        visited[startPos.x][startPos.y]=true;
         count=0;
-        dfs(startPos,1);
+        dfs(startPoint,1);
         System.out.println(count);
     }
-    public static void dfs(Pos pos, int next){
-        // 종료 조건
-        if (pos.equals(posList.get(next))){
-            if (next==m-1){
+    public static void dfs(Point curPoint,int index){
+        // 다음 위치에 방문한 경우
+        if (curPoint.equals(pointList.get(index))){
+            // 도착지점인 경우
+            if (index==m-1){
                 count++;
                 return;
             }
-            next++;
+            index++;
         }
+        // 그렇지 않은 경우
+        // 1. 방문 표시
+        visited[curPoint.x][curPoint.y]=true;
+        // 2. 다음으로 이동할 곳 탐색
         for (int d=0;d<dx.length;d++){
-            int nx=pos.x+dx[d];
-            int ny=pos.y+dy[d];
-            // 격자 범위를 벗어나는 경우 제외
+            int nx=curPoint.x+dx[d];
+            int ny=curPoint.y+dy[d];
+            
+            // 격자 범위에 넘어가는지 확인
             if (!isRange(nx,ny)) continue;
-            // 이미 방문한 경우 제외
-            if (visited[nx][ny]) continue;
-            // 벽인 경우 제외
+
+            // 해당 위치가 벽인지 확인
             if (map[nx][ny]==1) continue;
 
-            // 모든 조건을 통과한 경우
-            // 방문할 수 있는 칸이다
-            visited[nx][ny]=true;
-            dfs(new Pos(nx,ny),next);
-            visited[nx][ny]=false;
+            // 이미 방문한 곳인지 확인
+            if (visited[nx][ny]) continue;
+
+            dfs(new Point(nx,ny),index);
+            
         }
+        // 3. 탐색 후, 돌아왔을 때
+        // 다른 경로 탐색을 위해 방문 표시 복구
+        visited[curPoint.x][curPoint.y]=false;
+
     }
-    // 현재 위치가 배열 범위 안에 들어가는지 확인한다.
     public static boolean isRange(int x,int y){
         return x>=0 && x<n && y>=0 && y<n;
     }
-
 }

@@ -26,44 +26,31 @@ public class BOJ_1943_동전분배_김하연 {
     static StringTokenizer st;
 
     static StringBuilder sb;
-    static class Coin implements Comparable<Coin>{
-        int value;
-        int quantity;
-
-        Coin(int value, int quantity){
-            this.value=value;
-            this.quantity=quantity;
-        }
-
-        @Override
-        public int compareTo(Coin o) {
-            return Integer.compare(this.value,o.value);
-        }
-    }
-
     public static void main(String[] args) throws IOException{
-
         br=new BufferedReader(new InputStreamReader(System.in));
         sb=new StringBuilder();
-
         for (int tc=0;tc<3;tc++){
             int N=Integer.parseInt(br.readLine().trim());
-            Coin[] coins=new Coin[N];
-            boolean[] dp=new boolean[100000+1];     // 동전으로 i원 만들 수 있는지
+            int[] coins=new int[N];
+            int[] quantity=new int[N];
+            boolean[] dp=new boolean[100000+1];     // i원을 동전으로 만들 수 있는지
+
             int sum=0;
+
             for (int idx=0;idx<N;idx++){
                 st=new StringTokenizer(br.readLine().trim());
                 int value=Integer.parseInt(st.nextToken());
-                int quantity=Integer.parseInt(st.nextToken());
+                int count=Integer.parseInt(st.nextToken());
 
-                coins[idx]=new Coin(value,quantity);
-                sum+=(value*quantity);
-
-                for (int q=1;q<=quantity;q++){
+                coins[idx]=value;
+                quantity[idx]=count;
+                sum+=(value*count);
+                for (int q=1;q<=count;q++){
                     dp[value*q]=true;
                 }
             }
-            // 홀수인 경우 반으로 나눌 수 없다.
+
+            // 홀수인 경우
             if (sum%2==1){
                 sb.append(0).append("\n");
                 continue;
@@ -72,17 +59,20 @@ public class BOJ_1943_동전분배_김하연 {
                 continue;
             }
 
-            dp[0]=true;
-            // 주어진 동전으로 sum/2원을 만들 수 있는지 확인
+            // 각 동전이 만들 수 있는 가격을 표시한다.
             for (int idx=0;idx<N;idx++){
-                int value=coins[idx].value;
-                int quantity=coins[idx].quantity;
-
-                for (int cost=sum/2;cost>=value;cost--){
-                    if (dp[cost-value]){
-                        for (int q=1;q<=quantity;q++){
-                            if (cost-value+value*q>sum/2) break;
-                            dp[cost-value+value*q]=true;
+                int coin=coins[idx];
+                int cnt=quantity[idx];
+                // sum/2부터 감소하면서 dp 배열을 채워나가는 경우
+                // 오름차순으로 dp 배열을 채워나가면 앞 순서에 true로 표시한 값이 중복되어 값이 갱신된다.
+                // 주어진 동전 개수보다 더 많이 사용하게 된다.
+                for (int value=sum/2;value>=coin;value--){      // dp[sum/2]==true이면 돈의 총합을 반으로 나눌 수 있다.
+                    if (dp[value-coin]){
+                        for (int q=1;q<=cnt;q++){
+                            if (value-coin+q*coin>sum/2){
+                                break;
+                            }
+                            dp[value-coin+q*coin]=true;
                         }
                     }
                 }

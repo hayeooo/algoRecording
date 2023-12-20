@@ -14,6 +14,7 @@ import java.util.StringTokenizer;
  *
  * [ 풀이 ]
  * 처음에 dp 1차원 배열을 만들어 풀려고 했지만 최악의 경우 10^16이므로 시간초과된다.
+ * 규칙이 있는 점화식을 활용하여 시간복잡도를 log만큼 줄여야 한다.
  *
  */
 public class BOJ_9527_1의개수세기_김하연 {
@@ -24,9 +25,10 @@ public class BOJ_9527_1의개수세기_김하연 {
     static long A;
     static long B;
 
-    static long[] dp=new long[55];
+    static long[] dp;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
+        dp=new long[55];
 
         br=new BufferedReader(new InputStreamReader(System.in));
         st=new StringTokenizer(br.readLine().trim());
@@ -35,22 +37,20 @@ public class BOJ_9527_1의개수세기_김하연 {
         B=Long.parseLong(st.nextToken());
 
         setDp();
-        long result=calOne(B)-calOne(A-1);
-        System.out.println(result);
 
+        long result=calOne(B)-calOne(A-1);
+        System.out.print(result);
 
     }
-    // 1~N 정수에 대한 1의 개수 구하는 함수
-    static long calOne(long N){
+
+    public static long calOne(long N){
         long count=N&1;
-        // N보다 작은 2^n의 n의 최댓값
         int size=(int)(Math.log(N)/Math.log(2));
-        // N-(1L<<i) : 지정된 1이 반복 사용될 개수
-        // + 1 :1000 ..
+        //System.out.println(size);
         for (int i=size;i>0;i--){
-            // 첫 번째 비트가 있을 경우
+            // 첫번째 자리가 1이면
             if ((N&(1L<<i))!=0L){
-                count+=dp[i-1]+(N-(1L<<i)+1);
+                count+=dp[i-1]+(N-(1L<<i))+1;
                 N-=(1L<<i);
             }
         }
@@ -58,9 +58,6 @@ public class BOJ_9527_1의개수세기_김하연 {
     }
     public static void setDp(){
         dp[0]=1;
-        // 점화식 적용
-        // DP[i-1]<<1 : DP[n-1]*2
-        // 1L << i : 2^i
         for (int i=1;i<55;i++){
             dp[i]=(dp[i-1]<<1)+(1L<<i);
         }

@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
  * 합을 구하는 방법이 오름차순임을 보장하는 dp여야 한다.
  * dp[합의 크기][1 or 2 or 3이 맨 뒤로 나올 때] = 계산 방법의 수
  */
-public class BOJ_123더하기4_김하연 {
+public class BOJ_15989_123더하기4_김하연 {
 
     static BufferedReader br;
     static StringBuilder sb;

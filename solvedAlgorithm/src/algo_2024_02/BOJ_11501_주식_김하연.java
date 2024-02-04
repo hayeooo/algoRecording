@@ -16,27 +16,25 @@ public class BOJ_11501_주식_김하연 {
     public static void main(String[] args) throws IOException {
 
         br=new BufferedReader(new InputStreamReader(System.in));
+
         T=Integer.parseInt(br.readLine().trim());
         sb=new StringBuilder();
         for (int tc=0;tc<T;tc++){
             int N=Integer.parseInt(br.readLine().trim());
-            int[] day=new int[N];
+            int[] arr=new int[N];
             st=new StringTokenizer(br.readLine().trim());
-            for (int d=0;d<N;d++){
-                day[d]=Integer.parseInt(st.nextToken());
+            for (int day=0;day<N;day++){
+                arr[day]=Integer.parseInt(st.nextToken());
             }
-
-            int maxCost=day[N-1];
             long totalProfit=0;
-            // 끝에서부터 탐색한다.
-            for (int idx=N-2;idx>=0;idx--){
-                // maxCost > 오늘 주식 : 주식을 판다.
-                if (maxCost>=day[idx]){
-                    totalProfit+=(maxCost-day[idx]);
+            int max=arr[N-1];
+            for (int day=N-2;day>=0;day--){
+                // 미래 주가가 더 높은 경우
+                if (max>=arr[day]){
+                    totalProfit+=(max-arr[day]);
                 }
-                // maxCost < 오늘 주식 : maxCost를 변경한다.
                 else{
-                    maxCost=day[idx];
+                    max=arr[day];
                 }
             }
             sb.append(totalProfit).append("\n");

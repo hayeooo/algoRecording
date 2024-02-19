@@ -6,6 +6,7 @@ local.properties
 .loadpath
 .recommenders
 .classpath
+.project
 *.iml
 .idea
 .target

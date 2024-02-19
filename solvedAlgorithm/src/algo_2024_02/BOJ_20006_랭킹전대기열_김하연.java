@@ -51,20 +51,9 @@ public class BOJ_20006_랭킹전대기열_김하연{
             for (int idx=0;idx<rooms.size();idx++){
                 // 처음 입장한 플레이어 레벨을 기준으로 -10부터 +10일 때
                 Room room=rooms.get(idx);
-                if (l>=room.level-10 && l<=room.level+10){
+                if (l>=room.level-10 && l<=room.level+10 && room.members.size()<m){
                     room.members.add(player);
                     find=true;
-
-                    // 정원을 채운 경우 출력한다.
-                    if (room.members.size()==m){
-                        // 닉네임은 사전 순으로
-                        Collections.sort(room.members);
-                        for (Player participant:room.members){
-                            sb.append(participant.level).append(" ").append(participant.nickname).append("\n");
-                        }
-                        // 해당 방을 삭제한다.
-                        rooms.remove(idx);
-                    }
                     break;
                 }
             }
@@ -74,12 +63,22 @@ public class BOJ_20006_랭킹전대기열_김하연{
                 room.level=l;
                 room.members=new ArrayList<String>();
                 room.members.add(player);
-                sb.append("Started!").append("\n");
             }
         }
-        // 모든 방 매칭을 한 후, 대기 중인 방 출력
+        // 모든 방 매칭을 한 후, 방 정보 출력
         for (int idx=0;idx<rooms.size();idx++){
-            sb.append("Waiting!").append("\n");
+            Room room=rooms.get(idx);
+            if (room.members.size()==m){
+                sb.append("Started!")
+            }
+            else{
+                sb.append("Waiting!");
+            }
+            // 닉네임 사전 순대로 정렬한다.
+            Collections.sort(room.members);
+            for (Player player:room.members){
+                sb.append(player.level).append(" ").append(player.nickname).append("\n");
+            }
         }
         System.out.print(sb);
     }

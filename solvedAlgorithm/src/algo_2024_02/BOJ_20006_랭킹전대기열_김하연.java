@@ -1,6 +1,25 @@
+package algo_2024_02;
+
 import java.io.*;
 import java.util.*;
 
+class Room{
+    int level;
+    List<Player> players;
+}
+class Player implements Comparable<Player>{
+    String nickname;
+    int level;
+
+    Player(String nickname,int level){
+        this.nickname=nickname;
+        this.level=level;
+    }
+    @Override
+    public int compareTo(Player other){
+        return this.nickname.compareTo(other.nickname);
+    }
+}
 public class BOJ_20006_랭킹전대기열_김하연{
 
     static BufferedReader br;
@@ -10,23 +29,7 @@ public class BOJ_20006_랭킹전대기열_김하연{
     static int p;           // 플레이어의 수
     static int m;           // 방의 정원
 
-    class Room{
-        int level;
-        List<String> members;
-    }
-    class Player implements Comparable<Player>{
-        String nickname;
-        int level;
 
-        Player(String nickname,int level){
-            this.nickname=nickname;
-            this.level=level;
-        }
-        @Override
-        public int compareTo(Player other){
-            return this.nickname.compareTo(other.nickname);
-        }
-    }
 
     public static void main(String[] args) throws IOException{
         br=new BufferedReader(new InputStreamReader(System.in));
@@ -51,8 +54,8 @@ public class BOJ_20006_랭킹전대기열_김하연{
             for (int idx=0;idx<rooms.size();idx++){
                 // 처음 입장한 플레이어 레벨을 기준으로 -10부터 +10일 때
                 Room room=rooms.get(idx);
-                if (l>=room.level-10 && l<=room.level+10 && room.members.size()<m){
-                    room.members.add(player);
+                if (l>=room.level-10 && l<=room.level+10 && room.players.size()<m){
+                    room.players.add(player);
                     find=true;
                     break;
                 }
@@ -61,22 +64,22 @@ public class BOJ_20006_랭킹전대기열_김하연{
             if (!find){
                 Room room=new Room();
                 room.level=l;
-                room.members=new ArrayList<String>();
-                room.members.add(player);
+                room.players=new ArrayList<Player>();
+                room.players.add(player);
             }
         }
         // 모든 방 매칭을 한 후, 방 정보 출력
         for (int idx=0;idx<rooms.size();idx++){
             Room room=rooms.get(idx);
-            if (room.members.size()==m){
-                sb.append("Started!")
+            if (room.players.size()==m){
+                sb.append("Started!").append("\n");
             }
             else{
-                sb.append("Waiting!");
+                sb.append("Waiting!").append("\n");
             }
             // 닉네임 사전 순대로 정렬한다.
-            Collections.sort(room.members);
-            for (Player player:room.members){
+            Collections.sort(room.players);
+            for (Player player:room.players){
                 sb.append(player.level).append(" ").append(player.nickname).append("\n");
             }
         }

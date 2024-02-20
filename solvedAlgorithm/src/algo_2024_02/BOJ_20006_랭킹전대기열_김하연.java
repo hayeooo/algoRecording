@@ -66,6 +66,7 @@ public class BOJ_20006_랭킹전대기열_김하연{
                 room.level=l;
                 room.players=new ArrayList<Player>();
                 room.players.add(player);
+                rooms.add(room);
             }
         }
         // 모든 방 매칭을 한 후, 방 정보 출력

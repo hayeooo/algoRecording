@@ -3,12 +3,23 @@ package algo_2024_02;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 
+class Node implements Comparable<Node>{
+    int region;
+    long cost;
+
+    Node(int region,long cost){
+        this.region=region;
+        this.cost=cost;
+    }
+
+    @Override
+    public int compareTo(Node other){
+        return Long.compare(this.cost,other.cost);
+    }
+}
 public class BOJ_24042_횡단보도_김하연 {
 
     static BufferedReader br;
@@ -16,7 +27,6 @@ public class BOJ_24042_횡단보도_김하연 {
 
     static int N;
     static int M;
-
 
     public static void main(String[] args) throws IOException {
 
@@ -26,8 +36,11 @@ public class BOJ_24042_횡단보도_김하연 {
         N=Integer.parseInt(st.nextToken());
         M=Integer.parseInt(st.nextToken());
 
-        List<int[]> seq=new ArrayList<>();
+        List<Node>[] graph=new ArrayList[N+1];
 
+        for (int idx=0;idx<=N;idx++){
+            graph[idx]=new ArrayList<>();
+        }
         // 순서를 저장해야 한다.
         for (int idx=0;idx<M;idx++){
             st=new StringTokenizer(br.readLine().trim());
@@ -35,28 +48,37 @@ public class BOJ_24042_횡단보도_김하연 {
             int region1=Integer.parseInt(st.nextToken());
             int region2=Integer.parseInt(st.nextToken());
 
-            int[] connectedRegions=new int[]{Math.min(region1,region2),Math.max(region1,region2)};
-
-            seq.add(connectedRegions);
+            graph[region1].add(new Node(region2,idx));
+            graph[region2].add(new Node(region1,idx));
         }
-        // 지역 1에서 출발하여 최소 시간을 저장하는 배열
-        int[] time=new int[N+1];
-        Arrays.fill(time,Integer.MAX_VALUE);
-        time[1]=0;
-        for (int sec=1;;sec++){
 
-            // 횡단보도 초록불이 되는 곳
-            int loc=(sec-1)%M;
+        // dijkstra
+        long[] distance=new long[N+1];
+        Arrays.fill(distance,Long.MAX_VALUE);
+        // 1번 지역에서 출발
+        distance[1]=0;
 
-            // 방문한 이력이 있는 경우 이동할 수 있다.
-            int[] regions=seq.get(loc);
-            if (time[regions[0]]!=Integer.MAX_VALUE && time[regions[1]]==Integer.MAX_VALUE){
-                time[regions[1]]=sec;
+        PriorityQueue<Node> pq=new PriorityQueue<>();
+        pq.add(new Node(1,0));
+        while(!pq.isEmpty()){
+            Node curNode=pq.poll();
 
-                if(regions[1]==N) break;
+            // 연결되어 있는 노드를 탐색한다.
+            for (Node nextNode:graph[curNode.region]){
+                long nextCost;
+                if (curNode.cost<nextNode.cost){
+                    nextCost=nextNode.cost+1;
+                }
+                else{
+                    nextCost=(long)(Math.ceil((double)(curNode.cost-nextNode.cost)/M)*M)+nextNode.cost+1;
+                }
+                if (nextCost<distance[nextNode.region]){
+                    distance[nextNode.region]=nextCost;
+                    pq.add(new Node(nextNode.region,nextCost));
+                }
             }
         }
-        System.out.println(time[N]);
+        System.out.println(distance[N]);
     }
 
 }

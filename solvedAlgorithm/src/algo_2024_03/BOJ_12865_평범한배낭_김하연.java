@@ -28,8 +28,13 @@ public class BOJ_12865_평범한배낭_김하연 {
             int W=Integer.parseInt(st.nextToken());
             int V=Integer.parseInt(st.nextToken());
 
-            for (int weight=W;weight<=K;weight++){
-                dp[item][weight]=Math.max(dp[item-1][weight-W]+V,dp[item-1][weight]);
+            for (int weight=0;weight<=K;weight++){
+                if (weight<W){
+                    dp[item][weight]=dp[item-1][weight];
+                }
+                else{
+                    dp[item][weight]=Math.max(dp[item-1][weight-W]+V,dp[item-1][weight]);
+                }
             }
         }
         System.out.println(dp[N][K]);

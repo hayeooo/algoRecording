@@ -97,6 +97,7 @@ public class BOJ_3190_뱀_김하연 {
                 if (info.time==time){
                     if (info.dir.equals("L")){
                         curDir=(curDir-1)%4;
+                        if (curDir<0) curDir+=4;
                     }
                     else if(info.dir.equals("D")){
                         curDir=(curDir+1)%4;

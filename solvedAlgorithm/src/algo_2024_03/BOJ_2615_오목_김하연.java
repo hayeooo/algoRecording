@@ -8,58 +8,41 @@ import java.util.StringTokenizer;
 public class BOJ_2615_오목_김하연 {
     static BufferedReader br;
     static StringTokenizer st;
-    static StringBuilder sb;
-    static int[] dx={0,1,1,1};     // 동, 동남, 남, 남서
-    static int[] dy={1,1,0,-1};
-    static char[][] map;
-    static boolean[][] visited;
-    static final int N = 19;
+    static int[][] map;
+    static int[][][] visited;
 
-    static class Pos{
-        int x;
-        int y;
-        char color;
-        Pos(int x, int y, char color){
-            this.x=x;
-            this.y=y;
-            this.color=color;
-        }
-    }
+    static int[] dx={-1,0,1,1};
+    static int[] dy={1,1,1,0};
+
     public static void main(String[] args) throws IOException {
+
         br=new BufferedReader(new InputStreamReader(System.in));
 
-        // 19 * 19
-        map = new char[N][N];
-        visited =new boolean[N][N];
+        map=new int[21][21];
+        visited=new int[21][21][4];
 
-        for (int row=0;row<N;row++){
+        for (int row=1;row<20;row++){
             st=new StringTokenizer(br.readLine().trim());
-            for (int col=0;col<N;col++){
-                map[row][col]=st.nextToken().charAt(0);
+            for (int col=1;col<20;col++){
+                map[row][col]=Integer.parseInt(st.nextToken());
             }
         }
-        boolean find=false;
-        Pos win=new Pos(-1,-1, '0');
-        sb=new StringBuilder();
+        System.out.print(serialCount());
+    }
+    public static String serialCount(){
 
-        for (int row=0;row<N;row++){
-            for (int col=0;col<N;col++){
-                if (map[row][col]=='1' || map[row][col]=='2'){
-                    if (!visited[row][col]){
-                        for (int d=0;d<dx.length;d++) {
-                            int serialCnt = dfs(map[row][col], row, col, d, 1);
-                            if (serialCnt == 5) {
-                                win = new Pos(row, col, map[row][col]);
-                                find = true;
-                                break;
-                            }
+        for (int col=1;col<20;col++){
+            for (int row=1;row<20;row++){
+                if (map[row][col]!=0){
+                    for (int d=0;d<4;d++){
+                        if (visited[row][col][d]==0 && dfs(row,col,d,map[row][col])==5){
+                            return map[row][col]+"\n"+row+" "+col+"\n";
                         }
                     }
                 }
-                if (find) break;
             }
-            if (find) break;
         }
+<<<<<<< HEAD
         sb.append(win.color).append("\n");
         if (win.x>=0 && win.y>=0){
             sb.append(win.x).append(" ").append(win.y);
@@ -81,9 +64,18 @@ public class BOJ_2615_오목_김하연 {
         int nx=x+dx[d];
         int ny=y+dy[d];
         return dfs(color,nx,ny,d,count);
+=======
+        return "0";
+>>>>>>> d1a91aff29043dff2673b23109e398a353dcbc1f
     }
 
-    public static boolean isRange(int x,int y){
-        return x>=0 && x<N && y>=0 && y<N;
+    public static int dfs(int x,int y,int d,int color){
+        int nx=x+dx[d];
+        int ny=y+dy[d];
+
+        if (map[nx][ny]==color){
+            return visited[nx][ny][d]=dfs(nx,ny,d,color)+1;
+        }
+        return 1;
     }
 }

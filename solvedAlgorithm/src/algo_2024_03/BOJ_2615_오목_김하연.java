@@ -64,7 +64,7 @@ public class BOJ_2615_오목_김하연 {
         if (win.x>=0 && win.y>=0){
             sb.append(win.x).append(" ").append(win.y);
         }
-        System.out.print(sb)
+        System.out.print(sb);
     }
     // 방향도 고려해야 한다.
     public static int dfs(char color, int x, int y, int d, int count){

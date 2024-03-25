@@ -42,31 +42,8 @@ public class BOJ_2615_오목_김하연 {
                 }
             }
         }
-<<<<<<< HEAD
-        sb.append(win.color).append("\n");
-        if (win.x>=0 && win.y>=0){
-            sb.append(win.x).append(" ").append(win.y);
-        }
-        System.out.print(sb);
-    }
-    // 방향도 고려해야 한다.
-    public static int dfs(char color, int x, int y, int d, int count){
-        // 범위를 넘어간 경우
-        if (!isRange(x,y)) return count;
-        
-        // 알이 놓이지 않은 자리거나 다른 색깔인 경우
-        if (map[x][y]==0 || map[x][y]!=color) return count;
-        
-        // 그 외의 경우는 같은 색깔인 알인 경우
-        // 개수를 더하고 다음 위치를 찾는다.
-        visited[x][y]=true;
-        count+=1;
-        int nx=x+dx[d];
-        int ny=y+dy[d];
-        return dfs(color,nx,ny,d,count);
-=======
         return "0";
->>>>>>> d1a91aff29043dff2673b23109e398a353dcbc1f
+
     }
 
     public static int dfs(int x,int y,int d,int color){
